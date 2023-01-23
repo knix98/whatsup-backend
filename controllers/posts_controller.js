@@ -1,3 +1,3 @@
-module.exports.home = function (req, res) {
+module.exports.posts = function (req, res) {
   return res.end("<h1>Express is up for whatsup</h1>");
 };
