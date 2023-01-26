@@ -1,6 +1,9 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const port = 7000;
+
+const passport = require("passport");
 
 const env = require("./config/environment");
 require("./config/mongoose"); //code for setting up connection(using mongoose) to our db(MongoDb) running in the background
@@ -10,6 +13,8 @@ require("./config/mongoose"); //code for setting up connection(using mongoose) t
 //A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body).
 //This object will contain key-value pairs, where the value can be a string or array (when extended is false), or any type (when extended is true).
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(passport.initialize()); //init passport on every route call
 
 //keeping the route-matching middleware at the very end
 app.use("/", require("./routes/index"));
