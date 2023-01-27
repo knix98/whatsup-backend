@@ -3,13 +3,13 @@ const Post = require("../models/post");
 module.exports.posts = async function (req, res) {
   try {
     let posts = await Post.find()
-      .sort({ createdAt: -1 })
-      .limit(req.query.limit)
-      .populate("user", "name")
+      .sort({ createdAt: -1 }) //sorting by: latest first
+      .limit(req.query.limit) //limiting the number of posts to the limit
+      .populate("user", "name") //populating only the name field of user field
       .populate({
-        path: "comments",
+        path: "comments", //populating comments
         populate: {
-          path: "user",
+          path: "user", //populating only name of user field inside comments
           select: "name",
         },
       });

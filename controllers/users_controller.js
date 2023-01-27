@@ -60,8 +60,47 @@ module.exports.logIn = async function (req, res) {
         token: jwt.sign(user.toJSON(), env.jwt_secret, {
           expiresIn: "100000",
         }),
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        },
       },
     });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+module.exports.edit = async function (req, res) {
+  try {
+    if (req.user.id == req.body.id) {
+      let updatedUser = await User.findByIdAndUpdate(req.body.id, req.body);
+
+      return res.status(200).json({
+        success: true,
+        message: "User info updated successfully",
+        //in the data we will generate and send the JWT
+        data: {
+          token: jwt.sign(updatedUser.toJSON(), env.jwt_secret, {
+            expiresIn: "100000",
+          }),
+          user: {
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+          },
+        },
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorised",
+      });
+    }
   } catch (err) {
     return res.status(500).json({
       success: false,
