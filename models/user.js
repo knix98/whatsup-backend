@@ -15,10 +15,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    friendships: [
+    friends: [
       {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "Friendship",
+        ref: "User",
       },
     ],
   },

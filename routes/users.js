@@ -12,5 +12,10 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   usersController.edit
 ); //{session: false} indicates to passport to not create session cookies, since jwt is used
+router.get(
+  "/:userId",
+  passport.authenticate("jwt", { session: false }),
+  usersController.profile
+);
 
 module.exports = router;

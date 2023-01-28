@@ -4,6 +4,8 @@ const app = express();
 const port = 7000;
 
 const passport = require("passport");
+//important to require all the passport configurations of diff strategies here in main index.js, so that the config code runs immediately as the server starts
+const passportJWT = require("./config/passport-jwt-strategy");
 
 const env = require("./config/environment");
 require("./config/mongoose"); //code for setting up connection(using mongoose) to our db(MongoDb) running in the background

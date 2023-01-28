@@ -64,6 +64,7 @@ module.exports.logIn = async function (req, res) {
           _id: user._id,
           name: user.name,
           email: user.email,
+          friends: user.friends,
         },
       },
     });
@@ -92,6 +93,7 @@ module.exports.edit = async function (req, res) {
             _id: updatedUser._id,
             name: updatedUser.name,
             email: updatedUser.email,
+            friends: updatedUser.friends,
           },
         },
       });
@@ -101,6 +103,35 @@ module.exports.edit = async function (req, res) {
         message: "Unauthorised",
       });
     }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+module.exports.profile = async function (req, res) {
+  try {
+    let profileUser = await User.findById(req.params.userId);
+
+    if (!profileUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User Not Found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        user: {
+          email: profileUser.email,
+          name: profileUser.name,
+          _id: profileUser._id,
+        },
+      },
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
