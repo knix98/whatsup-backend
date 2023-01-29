@@ -26,3 +26,27 @@ module.exports.posts = async function (req, res) {
     });
   }
 };
+
+module.exports.createPost = async function (req, res) {
+  try {
+    let post = await Post.create({
+      content: req.body.content,
+      user: req.user._id,
+    });
+
+    post = await post.populate("user", "name email");
+
+    return res.status(200).json({
+      data: {
+        post: post,
+      },
+      success: true,
+      message: "Post Created !",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
