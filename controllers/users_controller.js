@@ -57,9 +57,7 @@ module.exports.logIn = async function (req, res) {
         //1st argument is converting the found user to JSON object
         //2nd argument is the same key as we mentioned in passport-jwt confif file
         //3rd is the time after which JWT expires in milliseconds
-        token: jwt.sign(user.toJSON(), env.jwt_secret, {
-          expiresIn: "100000",
-        }),
+        token: jwt.sign(user.toJSON(), env.jwt_secret, {}),
         user: {
           _id: user._id,
           name: user.name,
@@ -86,9 +84,7 @@ module.exports.edit = async function (req, res) {
         message: "User info updated successfully",
         //in the data we will generate and send the JWT
         data: {
-          token: jwt.sign(updatedUser.toJSON(), env.jwt_secret, {
-            expiresIn: "100000",
-          }),
+          token: jwt.sign(updatedUser.toJSON(), env.jwt_secret, {}),
           user: {
             _id: updatedUser._id,
             name: updatedUser.name,

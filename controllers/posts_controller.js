@@ -17,7 +17,9 @@ module.exports.posts = async function (req, res) {
     return res.status(200).json({
       message: "List of posts",
       success: true,
-      data: posts,
+      data: {
+        posts: posts,
+      },
     });
   } catch (err) {
     return res.status(500).json({
