@@ -40,7 +40,10 @@ module.exports.signUp = async function (req, res) {
 
 module.exports.logIn = async function (req, res) {
   try {
-    let user = await User.findOne({ email: req.body.email });
+    let user = await User.findOne({ email: req.body.email }).populate(
+      "friends",
+      "name email"
+    );
 
     if (!user || user.password != req.body.password) {
       return res.status(422).json({
@@ -127,6 +130,33 @@ module.exports.profile = async function (req, res) {
           _id: profileUser._id,
         },
       },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+module.exports.search = async function (req, res) {
+  try {
+    let searchText = req.query.text.trim(); //trim wud remove any whitespaces before and after the text
+    let users = await User.find({
+      name: { $regex: new RegExp("^" + searchText + ".*", "i") },
+    });
+
+    if (users) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          users: users,
+        },
+      });
+    }
+
+    return res.status(204).json({
+      success: false,
     });
   } catch (err) {
     return res.status(500).json({

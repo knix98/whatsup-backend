@@ -7,6 +7,11 @@ const usersController = require("../controllers/users_controller");
 
 router.post("/signup", usersController.signUp);
 router.post("/login", usersController.logIn);
+router.get(
+  "/search",
+  passport.authenticate("jwt", { session: false }),
+  usersController.search
+);
 router.put(
   "/edit",
   passport.authenticate("jwt", { session: false }),
