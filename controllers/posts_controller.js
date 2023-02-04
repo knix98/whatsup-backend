@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const Comment = require("../models/comment");
 
 module.exports.posts = async function (req, res) {
   try {
@@ -45,6 +46,35 @@ module.exports.createPost = async function (req, res) {
       success: true,
       message: "Post Created !",
     });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+module.exports.deletePost = async function (req, res) {
+  try {
+    let post = await Post.findById(req.query.post_id);
+
+    //only the user who posted the post should be allowed to delete the post
+    if (post.user == req.user.id) {
+      post.remove();
+
+      //also delete all the comments on this post
+      await Comment.deleteMany({ post: req.query.post_id }); //deleteMany doesn't return any promise, only deletes according to the passed query
+
+      return res.status(200).json({
+        success: true,
+        message: "Post deleted",
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorised",
+      });
+    }
   } catch (err) {
     return res.status(500).json({
       success: false,
