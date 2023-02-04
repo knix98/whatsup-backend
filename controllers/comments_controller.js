@@ -38,3 +38,39 @@ module.exports.createComment = async function (req, res) {
     });
   }
 };
+
+module.exports.deleteComment = async function (req, res) {
+  try {
+    let comment = await Comment.findById(req.query.comment_id);
+
+    //comment deletion should be allowed only to user who posted the comment
+    //while comparing 2 ids like in below's if condition, its IMP that atleast 1 of the 2 is in .id form
+    //make sure that both the values in the comparison shouldn't be in ._id form
+    if (comment.user == req.user.id) {
+      //first save the post-id on which the comment was made, so that we can delete the comment from that post's comments array also
+      let postId = comment.post;
+
+      comment.remove();
+
+      //now remove the comment id from comments array of the parent post
+      let post = await Post.findById(postId);
+      post.comments.pull(req.query.comment_id);
+      post.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Comment deleted",
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorised",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};

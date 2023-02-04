@@ -80,7 +80,9 @@ module.exports.logIn = async function (req, res) {
 module.exports.edit = async function (req, res) {
   try {
     if (req.user._id == req.body.id) {
-      let updatedUser = await User.findByIdAndUpdate(req.body.id, req.body);
+      let updatedUser = await User.findByIdAndUpdate(req.body.id, req.body, {
+        new: true,
+      }).populate("friends", "name email");
 
       return res.status(200).json({
         success: true,

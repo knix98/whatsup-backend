@@ -11,4 +11,10 @@ router.post(
   commentsController.createComment
 );
 
+router.delete(
+  "/delete",
+  passport.authenticate("jwt", { session: false }),
+  commentsController.deleteComment
+);
+
 module.exports = router;
