@@ -7,6 +7,12 @@ const usersController = require("../controllers/users_controller");
 
 router.post("/signup", usersController.signUp);
 router.post("/login", usersController.logIn);
+router.post(
+  "/upload_pic",
+  passport.authenticate("jwt", { session: false }),
+  usersController.uploadImage,
+  usersController.uploadUserPic
+);
 router.get(
   "/search",
   passport.authenticate("jwt", { session: false }),

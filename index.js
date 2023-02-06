@@ -16,6 +16,10 @@ require("./config/mongoose"); //code for setting up connection(using mongoose) t
 //This object will contain key-value pairs, where the value can be a string or array (when extended is false), or any type (when extended is true).
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//making the uploads path available to the browser(for downloading the uploaded files like user image)
+//browser accesses static files from the mentioned folder using http req only
+app.use("/uploads", express.static("./uploads"));
+
 app.use(passport.initialize()); //init passport on every route call
 
 //keeping the route-matching middleware at the very end
