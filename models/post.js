@@ -27,6 +27,9 @@ const postSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    image: {
+      type: String,
+    },
   },
   {
     timestamps: true, //for getting the created at, updated at fields

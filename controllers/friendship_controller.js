@@ -25,6 +25,7 @@ module.exports.addFriend = async function (req, res) {
           _id: otherFriend._id,
           name: otherFriend.name,
           email: otherFriend.email,
+          image: otherFriend.image,
         },
       },
     });

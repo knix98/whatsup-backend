@@ -46,7 +46,7 @@ module.exports.logIn = async function (req, res) {
   try {
     let user = await User.findOne({ email: req.body.email }).populate(
       "friends",
-      "name email"
+      "name email image"
     );
 
     if (!user || user.password != req.body.password) {
@@ -87,7 +87,7 @@ module.exports.edit = async function (req, res) {
     if (req.user._id == req.body.id) {
       let updatedUser = await User.findByIdAndUpdate(req.body.id, req.body, {
         new: true,
-      }).populate("friends", "name email");
+      }).populate("friends", "name email image");
 
       return res.status(200).json({
         success: true,
@@ -206,7 +206,10 @@ module.exports.uploadImage = upload.single("photo");
 
 module.exports.uploadUserPic = async (req, res) => {
   try {
-    let user = await User.findById(req.user.id);
+    let user = await User.findById(req.user.id).populate(
+      "friends",
+      "name email image"
+    );
 
     //we are able to access the form body of a multipart form because of multer
     //Multer adds a body object and a file or files object to the request object. The body object contains the values of the text fields of the form,

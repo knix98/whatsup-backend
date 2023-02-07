@@ -9,6 +9,7 @@ router.get("/getposts", postsController.posts);
 router.post(
   "/create",
   passport.authenticate("jwt", { session: false }),
+  postsController.uploadImage,
   postsController.createPost
 );
 router.delete(
