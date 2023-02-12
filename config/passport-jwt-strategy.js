@@ -10,7 +10,7 @@ const User = require("../models/user");
 let opts = {
   //mention the function to be used to extract jwt from req
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.jwt_secret, //this key provided by us will be used for encryption and decryption of jwt
+  secretOrKey: process.env.JWT_SECRET, //this key provided by us will be used for encryption and decryption of jwt
 };
 
 // configuring jwt strategy inside passport, so that passport uses this config done by us for jwt authentication wherever told to
