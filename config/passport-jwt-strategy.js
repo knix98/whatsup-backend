@@ -4,14 +4,13 @@ const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
 
 const User = require("../models/user");
-const env = require("./environment");
 
 //doing as mentioned in documentation
 //opts is an object literal containing options to control how the token is extracted from the request or verified.
 let opts = {
   //mention the function to be used to extract jwt from req
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: env.jwt_secret, //this key provided by us will be used for encryption and decryption of jwt
+  secretOrKey: process.env.jwt_secret, //this key provided by us will be used for encryption and decryption of jwt
 };
 
 // configuring jwt strategy inside passport, so that passport uses this config done by us for jwt authentication wherever told to
@@ -21,7 +20,6 @@ passport.use(
   new JWTstrategy(opts, function (jwtPayload, done) {
     User.findById(jwtPayload._id, function (err, user) {
       if (err) {
-        console.log("Error in finding user from JWT");
         return done(err);
       }
 
