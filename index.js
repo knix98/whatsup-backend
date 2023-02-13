@@ -1,7 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const app = express();
 const port = process.env.PORT || 7000;
+
+app.use(cors());
 
 const passport = require("passport");
 //important to require all the passport configurations of diff strategies here in main index.js, so that the config code runs immediately as the server starts
